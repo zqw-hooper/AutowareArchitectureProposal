@@ -26,3 +26,6 @@ ansible/roles/osqp/osqp/
 
 # us sample path data
 src/planning/util/path_loader/data/us_sample_path.csv
+
+# data
+data/
