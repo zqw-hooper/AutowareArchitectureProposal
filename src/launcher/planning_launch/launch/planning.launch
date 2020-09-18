@@ -2,10 +2,10 @@
   <!-- planning module -->
   <group ns="planning">
     <!-- mission planning module -->
-    <group ns="mission_planning">
+    <!-- <group ns="mission_planning">
       <include file="$(find planning_launch)/launch/mission_planning/mission_planning.launch">
       </include>
-    </group>
+    </group> -->
 
     <!-- scenario planning module -->
     <group ns="scenario_planning">

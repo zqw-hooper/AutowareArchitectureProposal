@@ -31,6 +31,8 @@ MissionPlanner::MissionPlanner() : pnh_("~"), tf_listener_(tf_buffer_)
   pnh_.param<std::string>("map_frame", map_frame_, "map");
   pnh_.param<std::string>("base_link_frame", base_link_frame_, "base_link");
 
+
+  //zqw-> move_base_simple/goal to /input/goal_pose in launch file
   goal_subscriber_ = pnh_.subscribe("input/goal_pose", 10, &MissionPlanner::goalPoseCallback, this);
   checkpoint_subscriber_ =
     pnh_.subscribe("input/checkpoint", 10, &MissionPlanner::checkpointCallback, this);
@@ -73,16 +75,25 @@ bool MissionPlanner::transformPose(
 
 void MissionPlanner::goalPoseCallback(const geometry_msgs::PoseStampedConstPtr & goal_msg_ptr)
 {
+  // ROS_INFO("zqw initial Pose x is :%f",start_pose_.pose.position.x);
+  // ROS_INFO("zqw initial Pose y is :%f",start_pose_.pose.position.y);
   // set start pose
   if (!getEgoVehiclePose(&start_pose_)) {
     ROS_ERROR("Failed to get ego vehicle pose in map frame. Aborting mission planning");
     return;
   }
+  // ROS_INFO("zqw transformPose initial Pose x is :%f",start_pose_.pose.position.x);
+  // ROS_INFO("zqw transformPose initial Pose y is :%f",start_pose_.pose.position.y);
+
   // set goal pose
+  // ROS_INFO("zqw goal Pose x is :%f",goal_msg_ptr->pose.position.x);
+  // ROS_INFO("zqw goal Pose y is :%f",goal_msg_ptr->pose.position.y);
   if (!transformPose(*goal_msg_ptr, &goal_pose_, map_frame_)) {
     ROS_ERROR("Failed to get goal pose in map frame. Aborting mission planning");
     return;
   }
+  // ROS_INFO("zqw transformPose goal Pose x is :%f",goal_pose_.pose.position.x);
+  // ROS_INFO("zqw transformPose goal Pose y is :%f",goal_pose_.pose.position.y);
 
   ROS_INFO("New goal pose is set. Reset checkpoints.");
   checkpoints_.clear();

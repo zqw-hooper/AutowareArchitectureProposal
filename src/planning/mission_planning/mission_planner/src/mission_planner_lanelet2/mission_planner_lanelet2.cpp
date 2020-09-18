@@ -189,9 +189,13 @@ void MissionPlannerLanelet2::visualizeRoute(const autoware_planning_msgs::Route 
 bool MissionPlannerLanelet2::isGoalValid() const
 {
   lanelet::Lanelet closest_lanelet;
+
+  //zqw-> get closest lane from goal pose in lanelet map and store in closest_lanelet
   if (!getClosestLanelet(goal_pose_.pose, lanelet_map_ptr_, &closest_lanelet)) {
     return false;
   }
+
+  //zqw-> convert goal pose to lanelet type lanelet::ConstPoint3d
   const auto goal_lanelet_pt = lanelet::utils::conversion::toLaneletPoint(goal_pose_.pose.position);
 
   if (isInLane(closest_lanelet, goal_lanelet_pt)) {

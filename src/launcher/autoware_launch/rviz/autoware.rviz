@@ -4,6 +4,8 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
+        - /System1/Vehicle1
+        - /Map1
         - /Sensing1/LiDAR1/ConcatenatePointCloud1/Autocompute Value Bounds1
         - /Sensing1/GNSS1/PoseWithCovariance1/Covariance1/Position1
         - /Localization1/NDT1/PoseHistory1/Line1
@@ -12,7 +14,7 @@ Panels:
         - /Planning1/ScenarioPlanning1
         - /Control1/Debug/MPC1/Namespaces1
       Splitter Ratio: 0.557669460773468
-    Tree Height: 435
+    Tree Height: 230
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -58,7 +60,8 @@ Visualization Manager:
           Show Arrows: true
           Show Axes: true
           Show Names: true
-          Tree: {}
+          Tree:
+            {}
           Update Interval: 0
           Value: false
         - Alpha: 0.5
@@ -82,7 +85,7 @@ Visualization Manager:
         - Class: rviz/Group
           Displays:
             - Class: rviz_plugins/SteeringAngle
-              Enabled: true
+              Enabled: false
               Left: 128
               Length: 256
               Name: SteeringAngle
@@ -91,10 +94,10 @@ Visualization Manager:
               Top: 128
               Topic: /vehicle/status/steering
               Unreliable: false
-              Value: true
+              Value: false
               Value height offset: 0
             - Class: rviz_plugins/ConsoleMeter
-              Enabled: true
+              Enabled: false
               Left: 512
               Length: 256
               Name: ConsoleMeter
@@ -103,7 +106,7 @@ Visualization Manager:
               Top: 128
               Topic: /vehicle/status/twist
               Unreliable: false
-              Value: true
+              Value: false
               Value height offset: 0
             - Alpha: 1
               Class: rviz_plugins/VelocityHistory
@@ -111,13 +114,13 @@ Visualization Manager:
               Constant Color:
                 Color: 255; 255; 255
                 Value: true
-              Enabled: true
+              Enabled: false
               Name: VelocityHistory
               Scale: 0.30000001192092896
               Timeout: 10
               Topic: /vehicle/status/twist
               Unreliable: false
-              Value: true
+              Value: false
             - Alpha: 0.30000001192092896
               Class: rviz/RobotModel
               Collision Enabled: false
@@ -192,25 +195,15 @@ Visualization Manager:
                   Show Axes: false
                   Show Trail: false
                   Value: true
-                gx5/imu_link:
+                sensor_kit_base_link:
                   Alpha: 1
                   Show Axes: false
                   Show Trail: false
-                  Value: true
                 tamagawa/imu_link:
                   Alpha: 1
                   Show Axes: false
                   Show Trail: false
                   Value: true
-                traffic_light/camera_link:
-                  Alpha: 1
-                  Show Axes: false
-                  Show Trail: false
-                  Value: true
-                traffic_light/camera_optical_link:
-                  Alpha: 1
-                  Show Axes: false
-                  Show Trail: false
                 velodyne_left:
                   Alpha: 1
                   Show Axes: false
@@ -250,7 +243,7 @@ Visualization Manager:
             - Class: rviz/PolarGridDisplay
               Color: 255; 255; 255
               Delta Range: 10
-              Enabled: true
+              Enabled: false
               Max Alpha: 1
               Max Range: 100
               Max Wave Alpha: 1
@@ -258,18 +251,18 @@ Visualization Manager:
               Min Wave Alpha: 0.20000000298023224
               Name: PolarGridDisplay
               Reference Frame: base_link
-              Value: true
+              Value: false
               Wave Color: 255; 255; 255
               Wave Velocity: 40
             - Class: rviz_plugins/TurnSignal
-              Enabled: true
+              Enabled: false
               Height: 256
               Left: 196
               Name: TurnSignal
               Top: 350
               Topic: /vehicle/turn_signal_cmd
               Unreliable: false
-              Value: true
+              Value: false
               Width: 512
           Enabled: true
           Name: Vehicle
@@ -289,7 +282,7 @@ Visualization Manager:
           Color: 255; 255; 255
           Color Transformer: Intensity
           Decay Time: 0
-          Enabled: true
+          Enabled: false
           Invert Rainbow: false
           Max Color: 255; 255; 255
           Max Intensity: 237
@@ -306,23 +299,13 @@ Visualization Manager:
           Unreliable: false
           Use Fixed Frame: true
           Use rainbow: false
-          Value: true
+          Value: false
         - Class: rviz/MarkerArray
           Enabled: true
           Marker Topic: /map/vector_map_marker
           Name: Lanelet2VectorMap
           Namespaces:
-            center_lane_line: true
-            crosswalk_lanelets: true
-            lanelet direction: true
-            left_lane_bound: true
-            parking_lots: true
-            parking_space: true
-            right_lane_bound: true
-            road_lanelets: false
-            stop_lines: true
-            traffic_light: true
-            traffic_light_triangle: true
+            {}
           Queue Size: 100
           Value: true
       Enabled: true
@@ -575,7 +558,8 @@ Visualization Manager:
               Enabled: true
               Marker Topic: /localization/pose_estimator/monte_carlo_initial_pose_marker
               Name: MonteCarloInitialPose
-              Namespaces: {}
+              Namespaces:
+                {}
               Queue Size: 1
               Value: true
           Enabled: true
@@ -604,7 +588,8 @@ Visualization Manager:
               Enabled: true
               Marker Topic: /perception/object_recognition/detection/objects/visualization
               Name: DynamicObjects
-              Namespaces: {}
+              Namespaces:
+                {}
               Queue Size: 100
               Value: true
           Enabled: false
@@ -615,7 +600,8 @@ Visualization Manager:
               Enabled: true
               Marker Topic: /perception/object_recognition/tracking/objects/visualization
               Name: DynamicObjects
-              Namespaces: {}
+              Namespaces:
+                {}
               Queue Size: 100
               Value: true
           Enabled: false
@@ -627,11 +613,7 @@ Visualization Manager:
               Marker Topic: /perception/object_recognition/objects/visualization
               Name: DynamicObjects
               Namespaces:
-                label: true
-                path: true
-                path confidence: true
-                shape: true
-                twist: true
+                {}
               Queue Size: 100
               Value: true
           Enabled: true
@@ -654,7 +636,8 @@ Visualization Manager:
               Enabled: true
               Marker Topic: /perception/traffic_light_recognition/traffic_light_map_based_detector/debug/markers
               Name: Beam
-              Namespaces: {}
+              Namespaces:
+                {}
               Queue Size: 100
               Value: true
           Enabled: true
@@ -670,10 +653,7 @@ Visualization Manager:
               Marker Topic: /planning/mission_planning/route_marker
               Name: RouteArea
               Namespaces:
-                goal_lanelets: true
-                left_lane_bound: true
-                right_lane_bound: true
-                route_lanelets: true
+                {}
               Queue Size: 100
               Value: true
             - Alpha: 1
@@ -741,14 +721,16 @@ Visualization Manager:
                       Enabled: false
                       Marker Topic: /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/debug/path
                       Name: Arrow
-                      Namespaces: {}
+                      Namespaces:
+                        {}
                       Queue Size: 100
                       Value: false
                     - Class: rviz/MarkerArray
                       Enabled: true
                       Marker Topic: /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/debug/crosswalk
                       Name: Crosswalk
-                      Namespaces: {}
+                      Namespaces:
+                        {}
                       Queue Size: 100
                       Value: true
                     - Class: rviz/MarkerArray
@@ -756,15 +738,7 @@ Visualization Manager:
                       Marker Topic: /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/debug/intersection
                       Name: Intersection
                       Namespaces:
-                        factor_text: true
-                        intersection_detection_lanelets: false
-                        judge_point_pose_line: true
-                        path_left_edge: false
-                        path_raw: false
-                        path_right_edge: false
-                        path_with_judgeline: false
-                        stop_virtual_wall: true
-                        stop_point_pose_line: false
+                        {}
                       Queue Size: 100
                       Value: true
                     - Class: rviz/MarkerArray
@@ -772,22 +746,15 @@ Visualization Manager:
                       Marker Topic: /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/debug/blind_spot
                       Name: Blind Spot
                       Namespaces:
-                        blind_spot_detection_area: false
-                        factor_text: true
-                        judge_point_pose_line: true
-                        path_left_edge: false
-                        path_raw: false
-                        path_right_edge: false
-                        path_with_judgeline: false
-                        stop_virtual_wall: true
-                        stop_point_pose_line: false
+                        {}
                       Queue Size: 100
                       Value: true
                     - Class: rviz/MarkerArray
                       Enabled: true
                       Marker Topic: /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/debug/traffic_light
                       Name: TrafficLight
-                      Namespaces: {}
+                      Namespaces:
+                        {}
                       Queue Size: 100
                       Value: true
                     - Class: rviz/MarkerArray
@@ -795,8 +762,7 @@ Visualization Manager:
                       Marker Topic: /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/debug/stop_line
                       Name: StopLine
                       Namespaces:
-                        factor_text: true
-                        stop_virtual_wall: true
+                        {}
                       Queue Size: 100
                       Value: true
                   Enabled: true
@@ -827,12 +793,7 @@ Visualization Manager:
                       Marker Topic: /planning/scenario_planning/lane_driving/motion_planning/obstacle_stop_planner/debug/marker
                       Name: ObstaclePointCloudStop
                       Namespaces:
-                        collision_polygons: true
-                        detection_polygons: true
-                        factor_text: true
-                        stop_virtual_wall: true
-                        stop_obstacle_point: true
-                        stop_obstacle_text: true
+                        {}
                       Queue Size: 100
                       Value: true
                   Enabled: true
@@ -895,7 +856,8 @@ Visualization Manager:
           Enabled: false
           Marker Topic: /control/mpc_follower/debug/markers
           Name: Debug/MPC
-          Namespaces: {}
+          Namespaces:
+            {}
           Queue Size: 100
           Value: false
         - Class: rviz/MarkerArray
@@ -975,14 +937,14 @@ Visualization Manager:
 Window Geometry:
   Displays:
     collapsed: false
-  Height: 1565
+  Height: 1025
   Hide Left Dock: false
   Hide Right Dock: false
   Image:
     collapsed: false
   InitialPoseButtonPanel:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd00000004000000000000033c00000563fc020000000dfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d000001f0000000c900fffffffb0000000a005600690065007700730100000233000000f2000000a400fffffffb0000001e0054006f006f006c002000500072006f0070006500720074006900650073010000032b000000a10000005c00fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000000c00430061006d0065007200610100000682000000eb0000000000000000fb0000000a0049006d00610067006501000003d2000001ce0000001600fffffffb0000002c0049006e0069007400690061006c0050006f007300650042007500740074006f006e00500061006e0065006c000000068f000000de0000007700fffffffb0000002c0049006e0069007400690061006c0050006f007300650042007500740074006f006e00500061006e0065006c000000068f000000de0000007700ffffff000000010000015f000006fffc0200000002fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e1000001970000000300000afd0000005afc0100000002fb0000000800540069006d0065010000000000000afd000002eb00fffffffb0000000800540069006d00650100000000000004500000000000000000000007bb0000056300000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd00000004000000000000033c00000347fc020000000dfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d00000123000000c900fffffffb0000000a005600690065007700730100000166000000a4000000a400fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007301000002100000005f0000005c00fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000000c00430061006d0065007200610100000682000000eb0000000000000000fb0000000a0049006d00610067006501000002750000010f0000001600fffffffb0000002c0049006e0069007400690061006c0050006f007300650042007500740074006f006e00500061006e0065006c000000068f000000de0000007700fffffffb0000002c0049006e0069007400690061006c0050006f007300650042007500740074006f006e00500061006e0065006c000000068f000000de0000007700ffffff000000010000015f000006fffc0200000002fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000073d0000005afc0100000002fb0000000800540069006d006501000000000000073d000002eb00fffffffb0000000800540069006d00650100000000000004500000000000000000000003fb0000034700000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -991,6 +953,6 @@ Window Geometry:
     collapsed: false
   Views:
     collapsed: false
-  Width: 2813
+  Width: 1853
   X: 67
   Y: 27
