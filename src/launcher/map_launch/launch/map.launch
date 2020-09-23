@@ -1,6 +1,6 @@
 <launch>
   <arg name="map_path" default="" />
-  <arg name="lanelet2_map_path" default="$(arg map_path)/test.osm" />
+  <arg name="lanelet2_map_path" default="$(arg map_path)/lanelet2_map.osm" />
   <arg name="pointcloud_map_path" default="$(arg map_path)/pointcloud_map.pcd" />
 
   <group ns="map">

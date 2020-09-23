@@ -228,6 +228,7 @@ bool MissionPlannerLanelet2::isGoalValid() const
 
 autoware_planning_msgs::Route MissionPlannerLanelet2::planRoute()
 {
+  printf("zqw-> planRoute\n");
   std::stringstream ss;
   for (const auto & checkpoint : checkpoints_) {
     ss << "x: " << checkpoint.pose.position.x << " "
@@ -288,6 +289,7 @@ bool MissionPlannerLanelet2::planPathBetweenCheckpoints(
   // get all possible lanes that can be used to reach goal (including all possible lane change)
   lanelet::Optional<lanelet::routing::Route> optional_route =
     routing_graph_ptr_->getRoute(start_lanelet, goal_lanelet, 0);
+
   if (!optional_route) {
     ROS_ERROR_STREAM(
       "Failed to find a proper path!"
@@ -300,7 +302,9 @@ bool MissionPlannerLanelet2::planPathBetweenCheckpoints(
   }
 
   const auto shortest_path = optional_route->shortestPath();
+  // printf("shortest path size :%d\n",shortest_path.size());
   for (const auto & llt : shortest_path) {
+    printf("zqw-> shortest path id :%d\n", llt.id());
     path_lanelets_ptr->push_back(llt);
   }
   return true;

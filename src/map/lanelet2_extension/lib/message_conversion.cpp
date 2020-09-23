@@ -68,9 +68,9 @@ void fromBinMsg(const autoware_lanelet2_msgs::MapBin & msg, lanelet::LaneletMapP
 
   std::string data_str;
   data_str.assign(msg.data.begin(), msg.data.end());
-
   std::stringstream ss;
   ss << data_str;
+
   boost::archive::binary_iarchive oa(ss);
   oa >> *map;
   lanelet::Id id_counter;
