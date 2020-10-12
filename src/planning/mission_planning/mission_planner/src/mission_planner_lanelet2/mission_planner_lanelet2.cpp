@@ -251,6 +251,10 @@ autoware_planning_msgs::Route MissionPlannerLanelet2::planRoute()
     if (!planPathBetweenCheckpoints(start_checkpoint, goal_checkpoint, &path_lanelets)) {
       return route_msg;
     }
+    // for (const auto & lane : path_lanelets) 
+    // {
+    //   printf("zqw-> lane id is : %d\n",lane.id());
+    // }
 
     RouteHandler route_handler(lanelet_map_ptr_, routing_graph_ptr_, path_lanelets);
     const auto main_lanelets = getMainLanelets(path_lanelets, route_handler);
@@ -329,14 +333,17 @@ RouteSections MissionPlannerLanelet2::createRouteSections(
 
   if (main_path.empty()) return route_sections;
 
-  for (const auto & main_llt : main_path) {
+  for (const auto & main_llt : main_path) 
+  {
     autoware_planning_msgs::RouteSection route_section_msg;
     lanelet::ConstLanelets route_section_lanelets = route_handler.getNeighborsWithinRoute(main_llt);
     route_section_msg.preferred_lane_id = main_llt.id();
-    for (const auto & section_llt : route_section_lanelets) {
+    for (const auto & section_llt : route_section_lanelets) 
+    {
       route_section_msg.lane_ids.push_back(section_llt.id());
       lanelet::ConstLanelet next_lanelet;
-      if (route_handler.getNextLaneletWithinRoute(section_llt, &next_lanelet)) {
+      if (route_handler.getNextLaneletWithinRoute(section_llt, &next_lanelet)) 
+      {
         route_section_msg.continued_lane_ids.push_back(section_llt.id());
       }
     }

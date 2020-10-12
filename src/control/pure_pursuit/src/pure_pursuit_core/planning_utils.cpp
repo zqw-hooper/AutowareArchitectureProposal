@@ -81,7 +81,7 @@ double convertCurvatureToSteeringAngle(double wheel_base, double kappa)
 std::vector<geometry_msgs::Pose> extractPoses(const autoware_planning_msgs::Trajectory & trajectory)
 {
   std::vector<geometry_msgs::Pose> poses;
-
+  // printf("zqw-> size of trajectory is : %d\n", trajectory.points.size());
   for (const auto & p : trajectory.points) {
     poses.push_back(p.pose);
   }

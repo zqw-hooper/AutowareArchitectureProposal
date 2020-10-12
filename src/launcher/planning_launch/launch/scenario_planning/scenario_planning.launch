@@ -26,7 +26,7 @@
     <include file="$(find planning_launch)/launch/scenario_planning/lane_driving.launch">
     </include>
     <!-- parking -->
-    <include file="$(find planning_launch)/launch/scenario_planning/parking.launch">
-    </include>
+    <!-- <include file="$(find planning_launch)/launch/scenario_planning/parking.launch">
+    </include> -->
   </group>
 </launch>

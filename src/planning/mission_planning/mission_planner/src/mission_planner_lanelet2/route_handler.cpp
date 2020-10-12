@@ -35,59 +35,103 @@ void RouteHandler::setRouteLanelets(
   lanelet_map_ptr_ = lanelet_map_ptr;
   routing_graph_ptr_ = routing_graph;
 
-  if (!path_lanelets.empty()) {
+  if (!path_lanelets.empty()) 
+  {
     auto first_lanelet = path_lanelets.front();
     start_lanelets_ = lanelet::utils::query::getAllNeighbors(routing_graph_ptr_, first_lanelet);
     auto last_lanelet = path_lanelets.back();
     goal_lanelets_ = lanelet::utils::query::getAllNeighbors(routing_graph_ptr_, last_lanelet);
   }
-
+  for (const auto & start_lanelet : start_lanelets_) 
+  {
+    printf("zqw-> start_lanelet lane id is : %d\n", start_lanelet.id());
+  }
   // set route lanelets
   std::unordered_set<lanelet::Id> route_lanelets_id;
   std::unordered_set<lanelet::Id> candidate_lanes_id;
-  for (const auto & lane : path_lanelets) {
+  for (const auto & lane : path_lanelets) 
+  {
     route_lanelets_id.insert(lane.id());
+    // printf("zqw-> current lane id is : %d\n",lane.id());
     const auto right_relations = routing_graph_ptr_->rightRelations(lane);
-    for (const auto & right_relation : right_relations) {
-      if (right_relation.relationType == lanelet::routing::RelationType::Right) {
+    for (const auto & right_relation : right_relations) 
+    {
+      // printf("zqw-> right_relation lane id is : %d\n",right_relation.lanelet.id());
+
+      if (right_relation.relationType == lanelet::routing::RelationType::Right) 
+      {
         route_lanelets_id.insert(right_relation.lanelet.id());
-      } else if (right_relation.relationType == lanelet::routing::RelationType::AdjacentRight) {
+        // printf("zqw-> right_relation lane Type Right \n");
+
+      } 
+      else if (right_relation.relationType == lanelet::routing::RelationType::AdjacentRight) 
+      {
         candidate_lanes_id.insert(right_relation.lanelet.id());
+        // printf("zqw-> right_relation lane Type AdjacentRight \n");
       }
     }
     const auto left_relations = routing_graph_ptr_->leftRelations(lane);
-    for (const auto & left_relation : left_relations) {
-      if (left_relation.relationType == lanelet::routing::RelationType::Left) {
+    for (const auto & left_relation : left_relations) 
+    {
+      // printf("zqw-> -----------------------\n");
+
+      // printf("zqw-> left_relation lane id is : %d\n",left_relation.lanelet.id());
+
+      if (left_relation.relationType == lanelet::routing::RelationType::Left) 
+      {
         route_lanelets_id.insert(left_relation.lanelet.id());
-      } else if (left_relation.relationType == lanelet::routing::RelationType::AdjacentLeft) {
+        // printf("zqw-> right_relation lane Type Left \n");
+      } 
+      else if (left_relation.relationType == lanelet::routing::RelationType::AdjacentLeft) 
+      {
         candidate_lanes_id.insert(left_relation.lanelet.id());
+        // printf("zqw-> right_relation lane Type AdjacentLeft \n");
       }
     }
   }
-
+  
+  printf("zqw-> -----------------------\n");
   //  check if candidates are really part of route
-  for (const auto & candidate_id : candidate_lanes_id) {
+  for (const auto & candidate_id : candidate_lanes_id) 
+  {
     lanelet::ConstLanelet lanelet = lanelet_map_ptr_->laneletLayer.get(candidate_id);
     auto previous_lanelets = routing_graph_ptr_->previous(lanelet);
+    
+    printf("zqw-> candidate_id is : %d\n",candidate_id);
+    for(const auto & previous_lanelet : previous_lanelets)
+    {
+      printf("zqw-> previous_lanelet lane id is : %d\n", previous_lanelet.id());
+    }
+
     bool is_connected_to_main_lanes_prev = false;
     bool is_connected_to_candidate_prev = true;
-    if (exists(start_lanelets_, lanelet)) {
+    if (exists(start_lanelets_, lanelet)) 
+    {
       is_connected_to_candidate_prev = false;
     }
-    while (!previous_lanelets.empty() && is_connected_to_candidate_prev &&
-           !is_connected_to_main_lanes_prev) {
+    while (!previous_lanelets.empty() && is_connected_to_candidate_prev && !is_connected_to_main_lanes_prev) 
+    {
       is_connected_to_candidate_prev = false;
+      printf("zqw-> in while loop\n");
 
-      for (const auto & prev_lanelet : previous_lanelets) {
-        if (route_lanelets_id.find(prev_lanelet.id()) != route_lanelets_id.end()) {
+      for (const auto & prev_lanelet : previous_lanelets) 
+      {
+        if (route_lanelets_id.find(prev_lanelet.id()) != route_lanelets_id.end()) 
+        {
+          printf("zqw-> find prev_lanelet in route_lanelets_id\n");
+
           is_connected_to_main_lanes_prev = true;
           break;
         }
-        if (exists(start_lanelets_, prev_lanelet)) {
+        if (exists(start_lanelets_, prev_lanelet)) 
+        {
           break;
         }
 
-        if (candidate_lanes_id.find(prev_lanelet.id()) != candidate_lanes_id.end()) {
+        if (candidate_lanes_id.find(prev_lanelet.id()) != candidate_lanes_id.end()) 
+        {
+          printf("zqw-> find prev_lanelet in candidate_lanes_id\n");
+
           is_connected_to_candidate_prev = true;
           previous_lanelets = routing_graph_ptr_->previous(prev_lanelet);
           break;
@@ -98,34 +142,43 @@ void RouteHandler::setRouteLanelets(
     auto following_lanelets = routing_graph_ptr_->following(lanelet);
     bool is_connected_to_main_lanes_next = false;
     bool is_connected_to_candidate_next = true;
-    if (exists(goal_lanelets_, lanelet)) {
+    if (exists(goal_lanelets_, lanelet)) 
+    {
       is_connected_to_candidate_next = false;
     }
-    while (!following_lanelets.empty() && is_connected_to_candidate_next &&
-           !is_connected_to_main_lanes_next) {
+    while (!following_lanelets.empty() && is_connected_to_candidate_next && !is_connected_to_main_lanes_next) 
+    {
       is_connected_to_candidate_next = false;
-      for (const auto & next_lanelet : following_lanelets) {
-        if (route_lanelets_id.find(next_lanelet.id()) != route_lanelets_id.end()) {
+      for (const auto & next_lanelet : following_lanelets) 
+      {
+        if (route_lanelets_id.find(next_lanelet.id()) != route_lanelets_id.end()) 
+        {
           is_connected_to_main_lanes_next = true;
           break;
         }
-        if (exists(goal_lanelets_, next_lanelet)) {
+        if (exists(goal_lanelets_, next_lanelet)) 
+        {
           break;
         }
-        if (candidate_lanes_id.find(next_lanelet.id()) != candidate_lanes_id.end()) {
+        if (candidate_lanes_id.find(next_lanelet.id()) != candidate_lanes_id.end()) 
+        {
           is_connected_to_candidate_next = true;
           following_lanelets = routing_graph_ptr_->following(next_lanelet);
           break;
         }
       }
     }
+    printf("zqw-> ++++++++++++++++++++++++++++\n");
 
-    if (is_connected_to_main_lanes_next && is_connected_to_main_lanes_prev) {
+    if (is_connected_to_main_lanes_next && is_connected_to_main_lanes_prev) 
+    {
       route_lanelets_id.insert(candidate_id);
     }
   }
 
-  for (const auto & id : route_lanelets_id) {
+  for (const auto & id : route_lanelets_id) 
+  {
+    printf("zqw-> id is : %d\n", id);
     route_lanelets_.push_back(lanelet_map_ptr_->laneletLayer.get(id));
   }
 }

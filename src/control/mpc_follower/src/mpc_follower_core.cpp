@@ -41,17 +41,22 @@ MPCFollower::MPCFollower() : nh_(""), pnh_("~"), tf_listener_(tf_buffer_)
 
   /* vehicle model setup */
   pnh_.param("vehicle_model_type", vehicle_model_type_, std::string("kinematics"));
-  if (vehicle_model_type_ == "kinematics") {
+  if (vehicle_model_type_ == "kinematics") 
+  {
     double steer_tau;
     pnh_.param<double>("vehicle_model_steer_tau", steer_tau, 0.1);
 
     vehicle_model_ptr_ =
       std::make_shared<KinematicsBicycleModel>(wheelbase_, steer_lim_, steer_tau);
     ROS_INFO("[MPC] set vehicle_model = kinematics");
-  } else if (vehicle_model_type_ == "kinematics_no_delay") {
+  } 
+  else if (vehicle_model_type_ == "kinematics_no_delay") 
+  {
     vehicle_model_ptr_ = std::make_shared<KinematicsBicycleModelNoDelay>(wheelbase_, steer_lim_);
     ROS_INFO("[MPC] set vehicle_model = kinematics_no_delay");
-  } else if (vehicle_model_type_ == "dynamics") {
+  } 
+  else if (vehicle_model_type_ == "dynamics") 
+  {
     double mass_fl, mass_fr, mass_rl, mass_rr, cf, cr;
     pnh_.param<double>("mass_fl", mass_fl, 600);
     pnh_.param<double>("mass_fr", mass_fr, 600);
@@ -63,24 +68,33 @@ MPCFollower::MPCFollower() : nh_(""), pnh_("~"), tf_listener_(tf_buffer_)
     vehicle_model_ptr_ = std::make_shared<DynamicsBicycleModel>(
       wheelbase_, mass_fl, mass_fr, mass_rl, mass_rr, cf, cr);
     ROS_INFO("[MPC] set vehicle_model = dynamics");
-  } else {
+  } 
+  else 
+  {
     ROS_ERROR("[MPC] vehicle_model_type is undefined");
   }
 
   /* QP solver setup */
   std::string qp_solver_type;
   pnh_.param("qp_solver_type", qp_solver_type, std::string("unconstraint_fast"));
-  if (qp_solver_type == "unconstraint_fast") {
+  if (qp_solver_type == "unconstraint_fast") 
+  {
     qpsolver_ptr_ = std::make_shared<QPSolverEigenLeastSquareLLT>();
     ROS_INFO("[MPC] set qp solver = unconstraint_fast");
-  } else if (qp_solver_type == "qpoases_hotstart") {
+  } 
+  else if (qp_solver_type == "qpoases_hotstart") 
+  {
     // int max_iter;
     // pnh_.param("qpoases_max_iter", max_iter, int(500));
     // qpsolver_ptr_ = std::make_shared<QPSolverQpoasesHotstart>(max_iter);
     // ROS_INFO("[MPC] set qp solver = qpoases_hotstart");
-  } else if (qp_solver_type == "osqp") {
+  } 
+  else if (qp_solver_type == "osqp") 
+  {
     qpsolver_ptr_ = std::make_shared<QPSolverOSQP>();
-  } else {
+  } 
+  else 
+  {
     ROS_ERROR("[MPC] qp_solver_type is undefined");
   }
 

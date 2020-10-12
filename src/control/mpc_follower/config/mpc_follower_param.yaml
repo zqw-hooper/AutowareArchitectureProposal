@@ -30,7 +30,7 @@ mpc_weight_terminal_heading_error: 0.1       # terminal heading error weight in 
 mpc_zero_ff_steer_deg: 0.5                   # threshold that feed-forward angle becomes zero
 
 # -- vehicle model --
-vehicle_model_type: "kinematics" # vehicle model type for mpc prediction. option is kinematics, kinematics_no_delay, and dynamics
+vehicle_model_type: "dynamics" # vehicle model type for mpc prediction. option is kinematics, kinematics_no_delay, and dynamics
 input_delay: 0.24     # steering input delay time for delay compensation
 vehicle_model_steer_tau: 0.3     # steering dynamics time constant (1d approzimation) [s]
 steer_lim_deg: 40.0              # steering angle limit [deg]
