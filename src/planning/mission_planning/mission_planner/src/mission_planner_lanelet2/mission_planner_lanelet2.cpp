@@ -314,12 +314,13 @@ bool MissionPlannerLanelet2::planPathBetweenCheckpoints(
   return true;
 }
 
-lanelet::ConstLanelets MissionPlannerLanelet2::getMainLanelets(
-  const lanelet::ConstLanelets & path_lanelets, const RouteHandler & route_handler)
+lanelet::ConstLanelets MissionPlannerLanelet2::getMainLanelets(const lanelet::ConstLanelets & path_lanelets, const RouteHandler & route_handler)
 {
   auto lanelet_sequence = route_handler.getLaneletSequence(path_lanelets.back());
   lanelet::ConstLanelets main_lanelets;
-  while (!lanelet_sequence.empty()) {
+  
+  while (!lanelet_sequence.empty()) 
+  {
     main_lanelets.insert(main_lanelets.begin(), lanelet_sequence.begin(), lanelet_sequence.end());
     lanelet_sequence = route_handler.getPreviousLaneletSequence(lanelet_sequence);
   }

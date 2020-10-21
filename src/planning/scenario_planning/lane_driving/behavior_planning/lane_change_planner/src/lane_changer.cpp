@@ -85,7 +85,7 @@ void LaneChanger::init()
   state_machine_ptr_ = std::make_shared<StateMachine>(data_manager_ptr_, route_handler_ptr_);
   state_machine_ptr_->init();
   route_init_subscriber_ =
-    pnh_.subscribe("input/route", 1, &StateMachine::init, &(*state_machine_ptr_));
+    pnh_.subscribe("input/route", 1, &StateMachine::init, state_machine_ptr_.get());  // zqw->
   // Start timer. This must be done after all data (e.g. vehicle pose, velocity) are ready.
   timer_ = pnh_.createTimer(ros::Duration(0.1), &LaneChanger::run, this);
 }
@@ -105,13 +105,18 @@ void LaneChanger::waitForData()
   }
 }
 
-void LaneChanger::run(const ros::TimerEvent & event)
+void LaneChanger::run(const ros::TimerEvent & event)   // zqw-> 100 ms触发一次
 {
   state_machine_ptr_->updateState();
   const auto path = state_machine_ptr_->getPath();
 
   const auto goal = route_handler_ptr_->getGoalPose();
   const auto goal_lane_id = route_handler_ptr_->getGoalLaneId();
+
+  printf("zqw-> goal x is : %f\n", goal.position.x);
+  printf("zqw-> goal y is : %f\n", goal.position.y);
+
+  printf("zqw-> goal lane id is : %d\n", static_cast<int>(goal_lane_id));
 
   geometry_msgs::Pose refined_goal;
   {
@@ -122,6 +127,8 @@ void LaneChanger::run(const ros::TimerEvent & event)
       refined_goal = goal;
     }
   }
+  printf("zqw-> refined_goal x is : %f\n", refined_goal.position.x);
+  printf("zqw-> refined_goal y is : %f\n", refined_goal.position.y);
 
   auto refined_path = util::refinePath(7.5, M_PI * 0.5, path, refined_goal, goal_lane_id);
   refined_path.header.frame_id = "map";
