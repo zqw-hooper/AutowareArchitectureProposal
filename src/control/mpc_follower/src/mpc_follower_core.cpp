@@ -31,7 +31,7 @@ MPCFollower::MPCFollower() : nh_(""), pnh_("~"), tf_listener_(tf_buffer_)
   pnh_.param<double>("admisible_position_error", admisible_position_error_, 5.0);
   pnh_.param<double>("admisible_yaw_error", admisible_yaw_error_, M_PI_2);
 
-  /* mpc parameters */
+  /* mpc parameters */ // zqw-> set vehicle limits
   double steer_lim_deg, steer_rate_lim_degs;
   pnh_.param<double>("steer_lim_deg", steer_lim_deg, 35.0);
   pnh_.param<double>("steer_rate_lim_degs", steer_rate_lim_degs, 150.0);
@@ -39,7 +39,7 @@ MPCFollower::MPCFollower() : nh_(""), pnh_("~"), tf_listener_(tf_buffer_)
   steer_lim_ = steer_lim_deg * DEG2RAD;
   steer_rate_lim_ = steer_rate_lim_degs * DEG2RAD;
 
-  /* vehicle model setup */
+  /* vehicle model setup */  // zqw-> select kinematics or dynamic vehicle model
   pnh_.param("vehicle_model_type", vehicle_model_type_, std::string("kinematics"));
   if (vehicle_model_type_ == "kinematics") 
   {
@@ -74,7 +74,7 @@ MPCFollower::MPCFollower() : nh_(""), pnh_("~"), tf_listener_(tf_buffer_)
     ROS_ERROR("[MPC] vehicle_model_type is undefined");
   }
 
-  /* QP solver setup */
+  /* QP solver setup */ // zqw-> select Quadratic Program solver
   std::string qp_solver_type;
   pnh_.param("qp_solver_type", qp_solver_type, std::string("unconstraint_fast"));
   if (qp_solver_type == "unconstraint_fast") 
@@ -106,21 +106,21 @@ MPCFollower::MPCFollower() : nh_(""), pnh_("~"), tf_listener_(tf_buffer_)
 
   /* delay compensation */
   double delay_tmp;
-  pnh_.param<double>("input_delay", delay_tmp, 0.0);
+  pnh_.param<double>("input_delay", delay_tmp, 0.0); // zqw->steering input delay time for delay compensation 0.24
   const int delay_step = std::round(delay_tmp / ctrl_period_);
   mpc_param_.input_delay = delay_step * ctrl_period_;
   input_buffer_ = std::deque<double>(delay_step, 0.0);
 
   /* initialize lowpass filter */
   double steering_lpf_cutoff_hz, error_deriv_lpf_curoff_hz;
-  pnh_.param<double>("steering_lpf_cutoff_hz", steering_lpf_cutoff_hz, 3.0);
+  pnh_.param<double>("steering_lpf_cutoff_hz", steering_lpf_cutoff_hz, 3.0); // zqw-> cutoff frequency of lowpass filter for steering command 3Hz
   pnh_.param<double>("error_deriv_lpf_curoff_hz", error_deriv_lpf_curoff_hz, 5.0);
   lpf_steering_cmd_.initialize(ctrl_period_, steering_lpf_cutoff_hz);
   lpf_lateral_error_.initialize(ctrl_period_, error_deriv_lpf_curoff_hz);
   lpf_yaw_error_.initialize(ctrl_period_, error_deriv_lpf_curoff_hz);
 
   /* set up ros system */
-  timer_control_ = nh_.createTimer(ros::Duration(ctrl_period_), &MPCFollower::timerCallback, this);
+  timer_control_ = nh_.createTimer(ros::Duration(ctrl_period_), &MPCFollower::timerCallback, this);  //zqw-> control period 0.03s
   pub_debug_steer_cmd_ = pnh_.advertise<autoware_vehicle_msgs::Steering>("debug/steering_cmd", 1);
   pub_ctrl_cmd_ =
     pnh_.advertise<autoware_control_msgs::ControlCommandStamped>("output/control_raw", 1);
@@ -219,7 +219,7 @@ bool MPCFollower::calculateMPC(autoware_control_msgs::ControlCommand * ctrl_cmd)
   }
 
   /* define initial state for error dynamics */
-  Eigen::VectorXd x0 = getInitialState(lat_err, yaw_err, steer);
+  Eigen::VectorXd x0 = getInitialState(lat_err, yaw_err, steer); // zqw-> get lat_err, dot_lat_err, yaw_err, dot_yaw_err matrix
 
   /* delay compensation */
   if (!updateStateForDelayCompensation(nearest_time, &x0)) {

@@ -71,8 +71,8 @@ void DynamicsBicycleModel::calculateDiscreteMatrix(
   Wd(2, 0) = 0.0;
   Wd(3, 0) = -(lf_ * lf_ * cf_ + lr_ * lr_ * cr_) / (iz_ * vel);
 
-  Bd = (Ad_inverse * dt) * Bd;
-  Wd = (Ad_inverse * dt * curvature_ * vel) * Wd;
+  Bd = (Ad_inverse * dt) * Bd;  // zqw-> forward euler
+  Wd = (Ad_inverse * dt * curvature_ * vel) * Wd; // zqw-> forward euler
 
   Cd = Eigen::MatrixXd::Zero(dim_y_, dim_x_);
   Cd(0, 0) = 1.0;
