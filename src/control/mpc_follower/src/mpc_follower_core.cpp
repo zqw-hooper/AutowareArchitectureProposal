@@ -633,15 +633,16 @@ bool MPCFollower::executeOptimization(
   const int DIM_U_N = mpc_param_.prediction_horizon * vehicle_model_ptr_->getDimU();
 
   // cost function: 1/2 * Uex' * H * Uex + f' * Uex,  H = B' * C' * Q * C * B + R
+  std::cout << "zqw-> mpc qp &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" << std::endl;
   const Eigen::MatrixXd CB = m.Cex * m.Bex;
   const Eigen::MatrixXd QCB = m.Qex * CB;
-  // Eigen::MatrixXd H = CB.transpose() * QCB + m.R1ex + m.R2ex; // This calculation is heavy. looking for a good way.
-  Eigen::MatrixXd H = Eigen::MatrixXd::Zero(DIM_U_N, DIM_U_N);
-  H.triangularView<Eigen::Upper>() = CB.transpose() * QCB;
-  H.triangularView<Eigen::Upper>() += m.R1ex + m.R2ex;
-  H.triangularView<Eigen::Lower>() = H.transpose();
+  Eigen::MatrixXd H = CB.transpose() * QCB + m.R1ex + m.R2ex; // This calculation is heavy. looking for a good way.
+  // Eigen::MatrixXd H = Eigen::MatrixXd::Zero(DIM_U_N, DIM_U_N);
+  // H.triangularView<Eigen::Upper>() = CB.transpose() * QCB;
+  // H.triangularView<Eigen::Upper>() += m.R1ex + m.R2ex;
+  // H.triangularView<Eigen::Lower>() = H.transpose();
   Eigen::MatrixXd f =
-    (m.Cex * (m.Aex * x0 + m.Wex)).transpose() * QCB - m.Urefex.transpose() * m.R1ex;
+    (m.Cex * (m.Aex * x0 + m.Wex)).transpose() * QCB - m.Urefex.transpose() * m.R1ex; // zqw->this make tracking has high precision through curve road.
   addSteerWeightF(&f);
 
   Eigen::MatrixXd A = Eigen::MatrixXd::Identity(DIM_U_N, DIM_U_N);

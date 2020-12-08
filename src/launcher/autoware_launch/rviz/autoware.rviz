@@ -12,6 +12,7 @@ Panels:
         - /Localization1/NDT1/MonteCarloInitialPose1/Namespaces1
         - /Localization1/EKF1/PoseHistory1/Line1
         - /Planning1/ScenarioPlanning1
+        - /Control1
         - /Control1/Debug/MPC1/Namespaces1
       Splitter Ratio: 0.557669460773468
     Tree Height: 230
@@ -36,7 +37,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: PointCloudMap
+    SyncSource: ""
   - Class: autoware_localization_rviz_plugin/InitialPoseButtonPanel
     Name: InitialPoseButtonPanel
   - Class: autoware_localization_rviz_plugin/InitialPoseButtonPanel
@@ -305,7 +306,14 @@ Visualization Manager:
           Marker Topic: /map/vector_map_marker
           Name: Lanelet2VectorMap
           Namespaces:
-            {}
+            center_lane_line: true
+            crosswalk_lanelets: true
+            left_lane_bound: true
+            right_lane_bound: true
+            road_lanelets: true
+            stop_lines: true
+            traffic_light: true
+            traffic_light_triangle: true
           Queue Size: 100
           Value: true
       Enabled: true
@@ -853,13 +861,13 @@ Visualization Manager:
     - Class: rviz/Group
       Displays:
         - Class: rviz/MarkerArray
-          Enabled: false
+          Enabled: true
           Marker Topic: /control/mpc_follower/debug/markers
           Name: Debug/MPC
           Namespaces:
             {}
           Queue Size: 100
-          Value: false
+          Value: true
         - Class: rviz/MarkerArray
           Enabled: false
           Marker Topic: /control/pure_pursuit/debug/marker
